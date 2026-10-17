@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Layout
-- `Source/`: all engine code (flat, no subfolders), `Engine.sln`, `Engine.vcxproj`, and `Source/3rdParty/`.
+- `Source/`: engine code (mostly flat; new modules go in `Source/Modules/`), `Engine.sln`, `Engine.vcxproj`, and `Source/3rdParty/`. Keep VS filters mirroring disk folders; include subfolder headers as `"Modules/X.h"` (`Source` is an include dir) and keep `.cpp` names unique (shared obj dir).
 - `Game/`: runtime working directory (`WinPixEventRuntime.dll`, `Assets/`).
 
 ## Build & run
@@ -23,8 +23,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 - Entry: `wWinMain` in `Engine.cpp` creates global `Application* app`. Frames are driven by `WM_PAINT` -> `app->update()` (no idle pump yet). WndProc forwards to ImGui, then Keyboard/Mouse.
-- `Application` owns `std::vector<Module*>` (only `ModuleInput` registered). `init` in registration order, `cleanUp` reversed; per frame: `update` -> `preRender` -> `render` -> `postRender` across all modules. Also tracks FPS/elapsed time.
-- Render passes (`ImGuiPass`, `DebugDrawPass`) are standalone classes taking D3D12 objects; not yet wired into a module. No device/swapchain/queue/descriptor-heap module exists yet.
+- `Application` owns `std::vector<Module*>` (`ModuleD3D12` then `ModuleInput` registered). `init` in registration order, `cleanUp` reversed; per frame: `update` -> `preRender` -> `render` -> `postRender` across all modules. Also tracks FPS/elapsed time.
+- Render passes (`ImGuiPass`, `DebugDrawPass`) are standalone classes taking D3D12 objects; not yet wired into a module. `ModuleD3D12` (`Source/Modules/`) is an empty skeleton that will own D3D12 init/cleanup; no device/swapchain/queue/descriptor-heap objects exist yet.
 - `Globals.h`: `LOG(fmt, ...)` (OutputDebugString), `FRAMES_IN_FLIGHT = 3`, `alignUp`, common includes/namespaces.
 - Shaders: no .hlsl files; DebugDrawPass compiles inline HLSL via `D3DCompile` (vs_5_0/ps_5_0) at runtime.
 - Legacy name "EngineDX" still appears in code (e.g. `IDC_ENGINEDX`).
