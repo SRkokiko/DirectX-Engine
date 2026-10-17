@@ -1,3 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="3rdParty\imgui-docking\backends\imgui_impl_dx12.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\imgui.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="3rdParty\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="3rdParty\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="DebugDrawPass.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="ImGuiPass.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="Modules\ModuleD3D12.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="3rdParty\imgui-1.89.8\backends\imgui_impl_win32.h" />
+    <ClInclude Include="3rdParty\imgui-docking\backends\imgui_impl_dx12.h" />
+    <ClInclude Include="3rdParty\imgui-docking\backends\imgui_impl_win32.h" />
+    <ClInclude Include="3rdParty\imgui-docking\imgui.h" />
+    <ClInclude Include="3rdParty\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="3rdParty\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="DebugDrawPass.h" />
+    <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="GamePad.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGuiPass.h" />
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PlatformHelpers.h" />
+    <ClInclude Include="ReadData.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Modules\ModuleD3D12.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Engine.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{3a47a578-6d7d-4c5b-8e9b-d41b842e1258}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 
 #include <shellapi.h>
 
+#include <dxgi1_3.h>
 #include "dxgidebug.h"
 
 #include "Keyboard.h"
@@ -76,6 +77,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     delete app;
 
+#if defined(_DEBUG)
+    // Report any D3D12/DXGI object still alive after the app has released everything
+    ComPtr<IDXGIDebug1> dxgiDebug;
+    if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiDebug))))
+    {
+        dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+    }
+#endif
 
     return (int) msg.wParam;
 }
