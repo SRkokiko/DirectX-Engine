@@ -1,0 +1,1 @@
+C:\Users\srkok\Documents\GIT\DirectX\Engine\Source\3rdParty\DirectXTex\Bin\Desktop_2022_Win10\x64\Release\DirectXTex.lib

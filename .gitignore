@@ -1,0 +1,25 @@
+# Visual Studio cache / user files
+.vs/
+*.user
+*.suo
+*.aps
+*.VC.db
+*.VC.opendb
+ipch/
+
+# Engine build output (OutDir/IntDir in Engine.vcxproj)
+Source/build/
+
+# MSVC intermediates (also covers 3rdParty build dirs; .lib/.dll are kept)
+*.pch
+*.ipch
+*.obj
+*.iobj
+*.ilk
+*.idb
+*.pdb
+*.ipdb
+*.tlog
+*.lastbuildstate
+*.recipe
+*.log
