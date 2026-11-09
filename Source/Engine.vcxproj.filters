@@ -19,6 +19,9 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="Exercices\Exercise1.cpp">
+      <Filter>Exercices</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleD3D12.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -47,6 +50,9 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Exercices\Exercise1.h">
+      <Filter>Exercices</Filter>
+    </ClInclude>
     <ClInclude Include="Modules\ModuleD3D12.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -64,6 +70,9 @@
   <ItemGroup>
     <Filter Include="Modules">
       <UniqueIdentifier>{3a47a578-6d7d-4c5b-8e9b-d41b842e1258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exercices">
+      <UniqueIdentifier>{7c1e5f2a-94b3-4d68-a0f1-5e2b8d3c6a17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -4,6 +4,13 @@
 
 #include <dxgi1_6.h>
 
+/**
+ * @brief Owns the D3D12 core: device, command queue, swap chain, render target views and the
+ * per-frame command allocators, command list and fence.
+ *
+ * preRender() opens the frame and postRender() submits and presents it, so other modules only
+ * record their draw commands in render() using getCommandList() and getCurrentRtvHandle().
+ */
 class ModuleD3D12 : public Module
 {
 public:
@@ -39,6 +46,19 @@ public:
      * Safe to call after a partially failed init().
      */
     bool cleanUp() override;
+
+    /**
+     * @brief Command list of the frame being recorded.
+     * @return Valid between preRender() and postRender(): the list is open for recording and
+     * the current back buffer is in RENDER_TARGET state.
+     */
+    ID3D12GraphicsCommandList* getCommandList() const { return commandList.Get(); }
+
+    /**
+     * @brief RTV descriptor of the back buffer currently being drawn to.
+     * @return Valid until the next Present.
+     */
+    D3D12_CPU_DESCRIPTOR_HANDLE getCurrentRtvHandle() const;
 
     /** @brief The D3D12 device.
      *  @return Owned by this module; valid between init() and cleanUp(). */

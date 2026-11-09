@@ -139,6 +139,12 @@ bool ModuleD3D12::cleanUp()
     return true;
 }
 
+D3D12_CPU_DESCRIPTOR_HANDLE ModuleD3D12::getCurrentRtvHandle() const
+{
+    // i-th RTV descriptor <-> i-th back buffer
+    return CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(), swapChain->GetCurrentBackBufferIndex(), rtvDescriptorSize);
+}
+
 // ---------------------------------------------------------------------------
 // Private helpers
 // ---------------------------------------------------------------------------
