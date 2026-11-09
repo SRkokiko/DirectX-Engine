@@ -1,6 +1,11 @@
 #include "Globals.h"
 #include "ModuleD3D12.h"
 
+// ---------------------------------------------------------------------------
+// Public interface
+// ---------------------------------------------------------------------------
+
+
 ModuleD3D12::ModuleD3D12(HWND hWnd) : hWnd(hWnd)
 {
 }
@@ -62,8 +67,82 @@ bool ModuleD3D12::init()
         return false;
     }
 
-    return createSwapChain() && createRenderTargets();
+    if (!createSwapChain())
+        return false;
+
+    if (!createRenderTargets())
+        return false;
+
+    return createFrameResources();
 }
+
+void ModuleD3D12::preRender()
+{
+    UINT index = swapChain->GetCurrentBackBufferIndex();
+
+    // Wait until the GPU is done with the last frame that used this buffer's allocator
+    waitForFence(frameFenceValues[index]);
+
+    commandAllocators[index]->Reset();
+    commandList->Reset(commandAllocators[index].Get(), nullptr);
+
+    // The swap chain hands us the buffer in PRESENT state; drawing needs RENDER_TARGET
+    CD3DX12_RESOURCE_BARRIER toRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+        backBuffers[index].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+    commandList->ResourceBarrier(1, &toRenderTarget);
+}
+
+void ModuleD3D12::postRender()
+{
+    UINT index = swapChain->GetCurrentBackBufferIndex();
+
+    CD3DX12_RESOURCE_BARRIER toPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+        backBuffers[index].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+    commandList->ResourceBarrier(1, &toPresent);
+    commandList->Close();
+
+    ID3D12CommandList* lists[] = { commandList.Get() };
+    commandQueue->ExecuteCommandLists(1, lists);
+
+    swapChain->Present(1, 0);
+
+    frameFenceValues[index] = ++fenceCounter;
+    commandQueue->Signal(fence.Get(), fenceCounter);
+}
+
+bool ModuleD3D12::cleanUp()
+{
+    // GPU must be idle before releasing anything it may still be using
+    flush();
+
+    if (fenceEvent)
+    {
+        CloseHandle(fenceEvent);
+        fenceEvent = nullptr;
+    }
+    fence.Reset();
+
+    // Release in reverse order of creation (views/buffers before the swap chain)
+    commandList.Reset();
+    for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
+        commandAllocators[i].Reset();
+    for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
+        backBuffers[i].Reset();
+    rtvHeap.Reset();
+    swapChain.Reset();
+    commandQueue.Reset();
+
+    device.Reset();
+    adapter.Reset();
+    factory.Reset();
+
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+// Private helpers
+// ---------------------------------------------------------------------------
+
 
 bool ModuleD3D12::createSwapChain()
 {
@@ -124,18 +203,51 @@ bool ModuleD3D12::createRenderTargets()
     return true;
 }
 
-bool ModuleD3D12::cleanUp()
+bool ModuleD3D12::createFrameResources()
 {
-    // Release in reverse order of creation (views/buffers before the swap chain)
     for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
-        backBuffers[i].Reset();
-    rtvHeap.Reset();
-    swapChain.Reset();
-    commandQueue.Reset();
+    {
+        if (FAILED(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocators[i]))))
+        {
+            LOG("Failed to create command allocator %u", i);
+            return false;
+        }
+    }
 
-    device.Reset();
-    adapter.Reset();
-    factory.Reset();
+    if (FAILED(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocators[0].Get(), nullptr, IID_PPV_ARGS(&commandList))))
+    {
+        LOG("Failed to create command list");
+        return false;
+    }
 
-    return true;
+    // Lists are created in recording state; preRender() expects to Reset() a closed one
+    commandList->Close();
+
+    if (FAILED(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence))))
+    {
+        LOG("Failed to create fence");
+        return false;
+    }
+
+    fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    return fenceEvent != nullptr;
+}
+
+void ModuleD3D12::waitForFence(UINT64 value)
+{
+    if (fence->GetCompletedValue() < value)
+    {
+        fence->SetEventOnCompletion(value, fenceEvent);
+        WaitForSingleObject(fenceEvent, INFINITE);
+    }
+}
+
+// Blocks until the GPU has finished everything submitted so far
+void ModuleD3D12::flush()
+{
+    if (commandQueue && fence && fenceEvent)
+    {
+        commandQueue->Signal(fence.Get(), ++fenceCounter);
+        waitForFence(fenceCounter);
+    }
 }
