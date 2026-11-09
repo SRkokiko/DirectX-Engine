@@ -222,11 +222,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
     case WM_SIZE:
-        if (wParam == SIZE_MINIMIZED) {
-            app->setPaused(true);
-        }
-        else {
-            app->setPaused(false);
+        // WM_SIZE can arrive while the window is being created, before app exists
+        if (app)
+        {
+            if (wParam == SIZE_MINIMIZED) {
+                app->setPaused(true);
+            }
+            else {
+                app->setPaused(false);
+                app->resize(LOWORD(lParam), HIWORD(lParam));
+            }
         }
         break;
     case WM_SYSKEYDOWN:

@@ -17,6 +17,7 @@ public:
 
 	bool         init();
 	void         update();
+	void         resize(unsigned width, unsigned height);
 	bool         cleanUp();
 
     

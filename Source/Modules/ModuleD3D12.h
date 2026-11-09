@@ -28,6 +28,13 @@ public:
     bool init() override;
 
     /**
+     * @brief Resizes the swap chain buffers to the new client area and rebuilds their RTVs.
+     * Waits for the GPU to finish first, since the old buffers can't be released while in use.
+     * Does nothing if the size didn't change or the swap chain doesn't exist yet.
+     */
+    void resize(UINT width, UINT height) override;
+
+    /**
      * @brief Opens the frame: waits until the GPU has finished the last frame that used the current
      * back buffer, resets its command allocator and the command list, and records the
      * PRESENT -> RENDER_TARGET barrier. Other modules record their draw commands in render().
@@ -67,6 +74,7 @@ public:
 private:
     bool createSwapChain();
     bool createRenderTargets();
+    bool createBackBufferViews();
     bool createFrameResources();
     void waitForFence(UINT64 value);
     void flush();

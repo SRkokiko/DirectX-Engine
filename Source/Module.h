@@ -20,6 +20,14 @@ public:
 		return true; 
 	}
 
+	/**
+	 * @brief Called when the window's client area changes size.
+	 * Never called with a zero width or height (minimized window).
+	 */
+	virtual void resize(unsigned width, unsigned height)
+	{
+	}
+
 	virtual void update()
 	{
 	}

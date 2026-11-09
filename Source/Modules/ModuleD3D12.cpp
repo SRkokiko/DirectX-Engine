@@ -76,6 +76,33 @@ bool ModuleD3D12::init()
     return createFrameResources();
 }
 
+void ModuleD3D12::resize(UINT width, UINT height)
+{
+    // Not initialized yet (WM_SIZE can arrive during window creation)
+    if (width == 0 || height == 0 || !swapChain)
+        return;
+
+    DXGI_SWAP_CHAIN_DESC1 desc;
+    swapChain->GetDesc1(&desc);
+    if (desc.Width == width && desc.Height == height)
+        return;
+
+    // The GPU must be done with the back buffers before releasing them
+    flush();
+
+    for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
+        backBuffers[i].Reset();
+
+    if (FAILED(swapChain->ResizeBuffers(BACK_BUFFER_COUNT, width, height, DXGI_FORMAT_UNKNOWN, 0)))
+    {
+        LOG("Failed to resize swap chain to %ux%u", width, height);
+        return;
+    }
+
+    // Same heap and slots, new buffers: just rewrite the descriptors
+    createBackBufferViews();
+}
+
 void ModuleD3D12::preRender()
 {
     UINT index = swapChain->GetCurrentBackBufferIndex();
@@ -193,6 +220,12 @@ bool ModuleD3D12::createRenderTargets()
 
     rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
+    return createBackBufferViews();
+}
+
+// Fetches the swap chain's buffers and (re)writes their RTV descriptors into the heap
+bool ModuleD3D12::createBackBufferViews()
+{
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvHeap->GetCPUDescriptorHandleForHeapStart());
     for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
     {

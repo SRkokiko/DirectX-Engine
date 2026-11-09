@@ -11,7 +11,7 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
 
     modules.push_back(d3d12);
     modules.push_back(new ModuleInput((HWND)hWnd));
-    modules.push_back(new Exercise1(d3d12));
+    modules.push_back(new Exercise1(d3d12)); // TODO DYNAMIC EXERCICE LINKAGE?
 }
 
 Application::~Application()
@@ -64,6 +64,15 @@ void Application::update()
         for (auto it = modules.begin(); it != modules.end(); ++it)
             (*it)->postRender();
     }
+}
+
+void Application::resize(unsigned width, unsigned height)
+{
+    if (width == 0 || height == 0)
+        return;
+
+    for (Module* module : modules)
+        module->resize(width, height);
 }
 
 bool Application::cleanUp()
