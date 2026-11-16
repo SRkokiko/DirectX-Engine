@@ -25,7 +25,13 @@
     <ClCompile Include="Exercices\Exercise2.cpp">
       <Filter>Exercices</Filter>
     </ClCompile>
+    <ClCompile Include="Exercices\ExerciceImGui.cpp">
+      <Filter>Exercices</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleD3D12.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Modules\ModuleResources.cpp">
@@ -62,7 +68,13 @@
     <ClInclude Include="Exercices\Exercise2.h">
       <Filter>Exercices</Filter>
     </ClInclude>
+    <ClInclude Include="Exercices\ExerciceImGui.h">
+      <Filter>Exercices</Filter>
+    </ClInclude>
     <ClInclude Include="Modules\ModuleD3D12.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleResources.h">
