@@ -86,5 +86,16 @@
     <Filter Include="Exercices">
       <UniqueIdentifier>{7c1e5f2a-94b3-4d68-a0f1-5e2b8d3c6a17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b132ca76-4336-4101-ad93-563d5f6662f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\Exercise2VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Exercise2PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
