@@ -71,13 +71,19 @@ public:
      *  @return Owned by this module; valid between init() and cleanUp(). */
     ID3D12Device5* getDevice() const { return device.Get(); }
 
+    /** @brief The direct command queue.
+     *  @return Owned by this module; valid between init() and cleanUp(). */
+    ID3D12CommandQueue* getCommandQueue() const { return commandQueue.Get(); }
+
+    /** @brief Blocks until the GPU has finished everything submitted to the queue so far. */
+    void flush();
+
 private:
     bool createSwapChain();
     bool createRenderTargets();
     bool createBackBufferViews();
     bool createFrameResources();
     void waitForFence(UINT64 value);
-    void flush();
 
 private:
     HWND hWnd = nullptr;

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "Modules/ModuleD3D12.h"
+#include "Modules/ModuleResources.h"
 #include "Exercices/Exercise1.h"
 
 
@@ -11,6 +12,7 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
 
     modules.push_back(d3d12);
     modules.push_back(new ModuleInput((HWND)hWnd));
+    modules.push_back(new ModuleResources(d3d12));
     modules.push_back(new Exercise1(d3d12)); // TODO DYNAMIC EXERCICE LINKAGE?
 }
 
