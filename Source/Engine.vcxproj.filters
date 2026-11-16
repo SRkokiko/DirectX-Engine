@@ -22,6 +22,9 @@
     <ClCompile Include="Exercices\Exercise1.cpp">
       <Filter>Exercices</Filter>
     </ClCompile>
+    <ClCompile Include="Exercices\Exercise2.cpp">
+      <Filter>Exercices</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleD3D12.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -54,6 +57,9 @@
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Exercices\Exercise1.h">
+      <Filter>Exercices</Filter>
+    </ClInclude>
+    <ClInclude Include="Exercices\Exercise2.h">
       <Filter>Exercices</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleD3D12.h">
