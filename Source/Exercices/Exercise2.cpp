@@ -4,17 +4,20 @@
 #include "Modules/ModuleD3D12.h"
 #include "Modules/ModuleResources.h"
 
+#include "ReadData.h"
+
 Exercise2::Exercise2(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d12), resources(resources)
 {
 }
 
 bool Exercise2::init()
 {
-    return createVertexBuffer() && createRootSignature();
+    return createVertexBuffer() && createRootSignature() && createPSO();
 }
 
 bool Exercise2::cleanUp()
 {
+    pso.Reset();
     rootSignature.Reset();
     vertexBuffer.Reset();
     return true;
@@ -58,6 +61,49 @@ bool Exercise2::createRootSignature()
     if (FAILED(d3d12->getDevice()->CreateRootSignature(0, blob->GetBufferPointer(), blob->GetBufferSize(), IID_PPV_ARGS(&rootSignature))))
     {
         LOG("Failed to create root signature");
+        return false;
+    }
+
+    return true;
+}
+
+bool Exercise2::createPSO()
+{
+    // ReadData throws if a .cso can't be found (next to the exe or in the working directory)
+    std::vector<uint8_t> dataVS, dataPS;
+    try
+    {
+        dataVS = DX::ReadData(L"Exercise2VS.cso");
+        dataPS = DX::ReadData(L"Exercise2PS.cso");
+    }
+    catch (const std::exception&)
+    {
+        LOG("Failed to read the Exercise2 shaders (.cso)");
+        return false;
+    }
+
+    // The semantic name must match the vertex shader's input: float3 pos : MY_POSITION
+    D3D12_INPUT_ELEMENT_DESC inputLayout[] =
+    {
+        { "MY_POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+    };
+
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+    psoDesc.pRootSignature = rootSignature.Get();
+    psoDesc.VS = { dataVS.data(), dataVS.size() };
+    psoDesc.PS = { dataPS.data(), dataPS.size() };
+    psoDesc.InputLayout = { inputLayout, _countof(inputLayout) };
+    psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+    psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+    psoDesc.NumRenderTargets = 1;
+    psoDesc.SampleDesc = { 1, 0 };
+    psoDesc.SampleMask = 0xffffffff;
+    psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+    psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+
+    if (FAILED(d3d12->getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pso))))
+    {
+        LOG("Failed to create the Exercise2 PSO");
         return false;
     }
 

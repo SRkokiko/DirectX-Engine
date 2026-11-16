@@ -19,17 +19,18 @@ public:
     Exercise2(ModuleD3D12* d3d12, ModuleResources* resources);
 
     /**
-     * @brief Creates the vertex buffer (and its view) and the root signature.
+     * @brief Creates the vertex buffer (and its view), the root signature and the PSO.
      * @return false if any step fails (the failure is logged).
      */
     bool init() override;
 
-    /** @brief Releases the buffer and root signature. */
+    /** @brief Releases the buffer, root signature and PSO. */
     bool cleanUp() override;
 
 private:
     bool createVertexBuffer();
     bool createRootSignature();
+    bool createPSO();
 
 private:
     ModuleD3D12* d3d12 = nullptr;
@@ -39,4 +40,5 @@ private:
     D3D12_VERTEX_BUFFER_VIEW vertexBufferView = {};
 
     ComPtr<ID3D12RootSignature> rootSignature;
+    ComPtr<ID3D12PipelineState> pso;
 };
