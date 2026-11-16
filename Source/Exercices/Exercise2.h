@@ -24,6 +24,13 @@ public:
      */
     bool init() override;
 
+    /**
+     * @brief Clears the back buffer and draws the triangle into the frame's command list.
+     * Runs between ModuleD3D12::preRender() and postRender(), which handle the list reset,
+     * the PRESENT <-> RENDER_TARGET barriers and the submission.
+     */
+    void render() override;
+
     /** @brief Releases the buffer, root signature and PSO. */
     bool cleanUp() override;
 

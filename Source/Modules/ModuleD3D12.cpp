@@ -172,6 +172,14 @@ D3D12_CPU_DESCRIPTOR_HANDLE ModuleD3D12::getCurrentRtvHandle() const
     return CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(), swapChain->GetCurrentBackBufferIndex(), rtvDescriptorSize);
 }
 
+void ModuleD3D12::getBackBufferSize(UINT& width, UINT& height) const
+{
+    DXGI_SWAP_CHAIN_DESC1 desc;
+    swapChain->GetDesc1(&desc);
+    width = desc.Width;
+    height = desc.Height;
+}
+
 // ---------------------------------------------------------------------------
 // Private helpers
 // ---------------------------------------------------------------------------

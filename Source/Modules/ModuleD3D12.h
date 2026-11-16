@@ -67,6 +67,12 @@ public:
      */
     D3D12_CPU_DESCRIPTOR_HANDLE getCurrentRtvHandle() const;
 
+    /**
+     * @brief Current size of the back buffers, used to set the viewport and scissor.
+     * @return Valid between init() and cleanUp(); follows resize().
+     */
+    void getBackBufferSize(UINT& width, UINT& height) const;
+
     /** @brief The D3D12 device.
      *  @return Owned by this module; valid between init() and cleanUp(). */
     ID3D12Device5* getDevice() const { return device.Get(); }

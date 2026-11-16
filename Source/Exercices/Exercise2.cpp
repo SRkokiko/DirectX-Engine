@@ -15,6 +15,32 @@ bool Exercise2::init()
     return createVertexBuffer() && createRootSignature() && createPSO();
 }
 
+void Exercise2::render()
+{
+    ID3D12GraphicsCommandList* commandList = d3d12->getCommandList();
+
+    UINT width, height;
+    d3d12->getBackBufferSize(width, height);
+
+    D3D12_CPU_DESCRIPTOR_HANDLE rtv = d3d12->getCurrentRtvHandle();
+    const float clearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+    commandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+    commandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+
+    // The list was reset without a PSO, so everything the draw needs is set here
+    commandList->SetGraphicsRootSignature(rootSignature.Get());
+    commandList->SetPipelineState(pso.Get());
+    commandList->IASetVertexBuffers(0, 1, &vertexBufferView);
+    commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    D3D12_VIEWPORT viewport{ 0.0f, 0.0f, float(width), float(height), 0.0f, 1.0f };
+    D3D12_RECT scissor{ 0, 0, LONG(width), LONG(height) };
+    commandList->RSSetViewports(1, &viewport);
+    commandList->RSSetScissorRects(1, &scissor);
+
+    commandList->DrawInstanced(3, 1, 0, 0);
+}
+
 bool Exercise2::cleanUp()
 {
     pso.Reset();
