@@ -30,7 +30,7 @@ namespace
 
 void ViewAbout::render()
 {
-    if (!ImGui::Begin("About", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    if (!ImGui::Begin("About", &open, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::End();
         return;

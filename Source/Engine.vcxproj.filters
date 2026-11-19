@@ -86,6 +86,9 @@
     <ClInclude Include="Views\ViewImGuiDemo.h">
       <Filter>Views</Filter>
     </ClInclude>
+    <ClInclude Include="Views\View.h">
+      <Filter>Views</Filter>
+    </ClInclude>
     <ClInclude Include="Views\ViewAbout.h">
       <Filter>Views</Filter>
     </ClInclude>

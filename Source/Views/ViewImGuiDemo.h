@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Module.h"
+#include "View.h"
 
 /**
  * @brief View that builds the Dear ImGui demo window every frame (drawn later by ModuleEditor).
  */
-class ViewImGuiDemo : public Module
+class ViewImGuiDemo : public View
 {
 public:
 

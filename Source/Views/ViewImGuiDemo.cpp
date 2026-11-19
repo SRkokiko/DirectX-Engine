@@ -5,5 +5,5 @@
 
 void ViewImGuiDemo::render()
 {
-    ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow(&open);
 }

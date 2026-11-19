@@ -187,6 +187,7 @@
     <ClInclude Include="Modules\ModuleExerciseHub.h" />
     <ClInclude Include="Views\ViewImGuiDemo.h" />
     <ClInclude Include="Views\ViewAbout.h" />
+    <ClInclude Include="Views\View.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlatformHelpers.h" />

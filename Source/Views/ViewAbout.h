@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Module.h"
+#include "View.h"
 
 /**
  * @brief View that shows an "About" window: engine name, description, author, libraries with versions and license.
  */
-class ViewAbout : public Module
+class ViewAbout : public View
 {
 public:
 

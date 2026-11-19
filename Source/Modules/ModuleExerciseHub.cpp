@@ -5,6 +5,7 @@
 #include "ModuleResources.h"
 #include "Exercices/Exercise1.h"
 #include "Exercices/Exercise2.h"
+#include "Views/View.h"
 #include "Views/ViewAbout.h"
 #include "Views/ViewImGuiDemo.h"
 
@@ -66,6 +67,14 @@ void ModuleExerciseHub::render()
     }
 
     forEachInstance([](Module& module) { module.render(); });
+
+    // A view closed with its X button: clear the flag so sync() destroys it and the menu check mark goes away
+    for (Entry& entry : views)
+    {
+        const View* view = dynamic_cast<const View*>(entry.instance);
+        if (view && !view->isOpen())
+            entry.enabled = false;
+    }
 }
 
 void ModuleExerciseHub::postRender()
