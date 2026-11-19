@@ -23,3 +23,6 @@ Source/build/
 *.lastbuildstate
 *.recipe
 *.log
+
+# ImGui writes window layout here on every run
+Game/imgui.ini

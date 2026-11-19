@@ -32,7 +32,7 @@ using Microsoft::WRL::ComPtr;
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 void log(const char file[], int line, const char* format, ...);
 
-#define FRAMES_IN_FLIGHT 3
+#define FRAMES_IN_FLIGHT 2
 
 #include "debug_draw.hpp"
 inline const ddVec3& ddConvert(const Vector3& v) { return reinterpret_cast<const ddVec3&>(v); }
