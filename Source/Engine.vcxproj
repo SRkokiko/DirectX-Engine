@@ -186,6 +186,7 @@
     <ClInclude Include="Modules\ModuleEditor.h" />
     <ClInclude Include="Modules\ModuleExerciseHub.h" />
     <ClInclude Include="Views\ViewImGuiDemo.h" />
+    <ClInclude Include="Views\ViewAbout.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlatformHelpers.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="Modules\ModuleEditor.cpp" />
     <ClCompile Include="Modules\ModuleExerciseHub.cpp" />
     <ClCompile Include="Views\ViewImGuiDemo.cpp" />
+    <ClCompile Include="Views\ViewAbout.cpp" />
     <ClCompile Include="Modules\ModuleResources.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SimpleMath.cpp">

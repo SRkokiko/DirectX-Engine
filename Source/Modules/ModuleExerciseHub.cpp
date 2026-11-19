@@ -5,6 +5,7 @@
 #include "ModuleResources.h"
 #include "Exercices/Exercise1.h"
 #include "Exercices/Exercise2.h"
+#include "Views/ViewAbout.h"
 #include "Views/ViewImGuiDemo.h"
 
 #include "imgui.h"
@@ -30,6 +31,7 @@ bool ModuleExerciseHub::init()
     add(exercises, "Exercise 2: Triangle", [this]() -> Module* { return new Exercise2(d3d12, resources); });
 
     add(views, "ImGui demo", []() -> Module* { return new ViewImGuiDemo(); });
+    add(views, "About", []() -> Module* { return new ViewAbout(); });
     return true;
 }
 

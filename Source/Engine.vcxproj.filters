@@ -37,6 +37,9 @@
     <ClCompile Include="Views\ViewImGuiDemo.cpp">
       <Filter>Views</Filter>
     </ClCompile>
+    <ClCompile Include="Views\ViewAbout.cpp">
+      <Filter>Views</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleResources.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -81,6 +84,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Views\ViewImGuiDemo.h">
+      <Filter>Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Views\ViewAbout.h">
       <Filter>Views</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleResources.h">
