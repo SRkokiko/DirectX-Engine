@@ -25,14 +25,17 @@
     <ClCompile Include="Exercices\Exercise2.cpp">
       <Filter>Exercices</Filter>
     </ClCompile>
-    <ClCompile Include="Exercices\ExerciceImGui.cpp">
-      <Filter>Exercices</Filter>
-    </ClCompile>
     <ClCompile Include="Modules\ModuleD3D12.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Modules\ModuleEditor.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\ModuleExerciseHub.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Views\ViewImGuiDemo.cpp">
+      <Filter>Views</Filter>
     </ClCompile>
     <ClCompile Include="Modules\ModuleResources.cpp">
       <Filter>Modules</Filter>
@@ -68,14 +71,17 @@
     <ClInclude Include="Exercices\Exercise2.h">
       <Filter>Exercices</Filter>
     </ClInclude>
-    <ClInclude Include="Exercices\ExerciceImGui.h">
-      <Filter>Exercices</Filter>
-    </ClInclude>
     <ClInclude Include="Modules\ModuleD3D12.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleEditor.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\ModuleExerciseHub.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Views\ViewImGuiDemo.h">
+      <Filter>Views</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleResources.h">
       <Filter>Modules</Filter>
@@ -97,6 +103,9 @@
     </Filter>
     <Filter Include="Exercices">
       <UniqueIdentifier>{7c1e5f2a-94b3-4d68-a0f1-5e2b8d3c6a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{e4a9c1d2-5b7f-4c38-9d60-2f1a8b7e3c45}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{b132ca76-4336-4101-ad93-563d5f6662f7}</UniqueIdentifier>

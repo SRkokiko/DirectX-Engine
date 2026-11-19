@@ -182,9 +182,10 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Exercices\Exercise1.h" />
     <ClInclude Include="Exercices\Exercise2.h" />
-    <ClInclude Include="Exercices\ExerciceImGui.h" />
     <ClInclude Include="Modules\ModuleD3D12.h" />
     <ClInclude Include="Modules\ModuleEditor.h" />
+    <ClInclude Include="Modules\ModuleExerciseHub.h" />
+    <ClInclude Include="Views\ViewImGuiDemo.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlatformHelpers.h" />
@@ -277,9 +278,10 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Exercices\Exercise1.cpp" />
     <ClCompile Include="Exercices\Exercise2.cpp" />
-    <ClCompile Include="Exercices\ExerciceImGui.cpp" />
     <ClCompile Include="Modules\ModuleD3D12.cpp" />
     <ClCompile Include="Modules\ModuleEditor.cpp" />
+    <ClCompile Include="Modules\ModuleExerciseHub.cpp" />
+    <ClCompile Include="Views\ViewImGuiDemo.cpp" />
     <ClCompile Include="Modules\ModuleResources.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SimpleMath.cpp">

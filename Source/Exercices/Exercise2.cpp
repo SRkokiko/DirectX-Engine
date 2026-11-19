@@ -22,11 +22,8 @@ void Exercise2::render()
     UINT width, height;
     d3d12->getBackBufferSize(width, height);
 
-    D3D12_CPU_DESCRIPTOR_HANDLE rtv = d3d12->getCurrentRtvHandle();
-    const float clearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
-    commandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
-    commandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
-
+    // NOTE: ModuleExerciseHub already cleared the back buffer and bound it as the render target.
+    
     // The list was reset without a PSO, so everything the draw needs is set here
     commandList->SetGraphicsRootSignature(rootSignature.Get());
     commandList->SetPipelineState(pso.Get());

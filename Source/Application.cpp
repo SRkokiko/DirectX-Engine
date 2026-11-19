@@ -3,9 +3,7 @@
 #include "ModuleInput.h"
 #include "Modules/ModuleD3D12.h"
 #include "Modules/ModuleResources.h"
-#include "Exercices/Exercise1.h"
-#include "Exercices/Exercise2.h"
-#include "Exercices/ExerciceImGui.h"
+#include "Modules/ModuleExerciseHub.h"
 #include "Modules/ModuleEditor.h"
 
 
@@ -18,10 +16,8 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
     ModuleResources* resources = new ModuleResources(d3d12);
     modules.push_back(resources);
 
-    /* TODO DYNAMIC EXERCICE LINKAGE ? */ 
-    //modules.push_back(new Exercise1(d3d12));
-    //modules.push_back(new Exercise2(d3d12, resources));
-    modules.push_back(new ExerciceImGui(d3d12));
+    // Hosts every exercise; they are toggled from its "Exercises" menu
+    modules.push_back(new ModuleExerciseHub(d3d12, resources));
 
     // Last: records the UI on top of everything the other modules drew
     modules.push_back(new ModuleEditor(d3d12, (HWND)hWnd));
