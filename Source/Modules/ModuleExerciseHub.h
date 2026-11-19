@@ -18,9 +18,8 @@ class ModuleResources;
  *
  * Must be registered after ModuleD3D12 and ModuleResources and before ModuleEditor, which records the UI last.
  *
- * TODO: render each exercise into its own offscreen texture and show it with ImGui::Image in its own window.
- * Needs a render target + SRV per exercise (so a descriptor allocator), resize handling, and the extra
- * barriers/viewport/scissor setup. The hub's interface shouldn't change, only how an exercise gets its render target.
+ * TODO: render exercises into one shared offscreen texture shown with ImGui::Image in a single window.
+ * Needs a render target + SRV (descriptor allocator) and resize handling. The hub's interface shouldn't change.
  */
 class ModuleExerciseHub : public Module
 {
