@@ -6,6 +6,10 @@
 
 #include "ReadData.h"
 
+// ---------------------------------------------------------------------------
+// Public interface
+// ---------------------------------------------------------------------------
+
 Exercise2::Exercise2(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d12), resources(resources)
 {
 }
@@ -45,6 +49,10 @@ bool Exercise2::cleanUp()
     vertexBuffer.Reset();
     return true;
 }
+
+// ---------------------------------------------------------------------------
+// Private helpers
+// ---------------------------------------------------------------------------
 
 bool Exercise2::createVertexBuffer()
 {

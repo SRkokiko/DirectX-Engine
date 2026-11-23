@@ -20,12 +20,12 @@ class ModuleDebugDraw;
  *
  * Must be registered after ModuleD3D12 and ModuleResources and before ModuleEditor, which records the UI last.
  *
- * TODO: bind and clear the depth buffer here for every exercise (ModuleD3D12::getDsvHandle()) once all the exercises
- * that draw geometry use a D32_FLOAT PSO (Exercise2 doesn't yet). Then Exercise3 can drop its own OMSetRenderTargets
- * and ClearDepthStencilView, and ModuleDebugDraw no longer depends on the exercise having bound the depth buffer.
- *
  * TODO: render exercises into one shared offscreen texture shown with ImGui::Image in a single window.
  * Needs a render target + SRV (descriptor allocator) and resize handling. The hub's interface shouldn't change.
+ * The hub would then also own the depth buffer (sized to that texture, not the window), bind and clear it for every
+ * exercise, and the one in ModuleD3D12 would move here. Exercise3 could then drop its own OMSetRenderTargets and
+ * ClearDepthStencilView, and ModuleDebugDraw would no longer depend on the exercise having bound the depth buffer.
+ * Every geometry exercise would need a D32_FLOAT PSO (Exercise2 doesn't have one yet).
  */
 class ModuleExerciseHub : public Module
 {
