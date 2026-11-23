@@ -25,6 +25,9 @@
     <ClCompile Include="Exercices\Exercise2.cpp">
       <Filter>Exercices</Filter>
     </ClCompile>
+    <ClCompile Include="Exercices\Exercise3.cpp">
+      <Filter>Exercices</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleD3D12.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -72,6 +75,9 @@
       <Filter>Exercices</Filter>
     </ClInclude>
     <ClInclude Include="Exercices\Exercise2.h">
+      <Filter>Exercices</Filter>
+    </ClInclude>
+    <ClInclude Include="Exercices\Exercise3.h">
       <Filter>Exercices</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleD3D12.h">
@@ -125,6 +131,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Exercise2PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Exercise3VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Exercise3PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

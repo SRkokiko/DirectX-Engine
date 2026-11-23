@@ -182,6 +182,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Exercices\Exercise1.h" />
     <ClInclude Include="Exercices\Exercise2.h" />
+    <ClInclude Include="Exercices\Exercise3.h" />
     <ClInclude Include="Modules\ModuleD3D12.h" />
     <ClInclude Include="Modules\ModuleEditor.h" />
     <ClInclude Include="Modules\ModuleExerciseHub.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Exercices\Exercise1.cpp" />
     <ClCompile Include="Exercices\Exercise2.cpp" />
+    <ClCompile Include="Exercices\Exercise3.cpp" />
     <ClCompile Include="Modules\ModuleD3D12.cpp" />
     <ClCompile Include="Modules\ModuleEditor.cpp" />
     <ClCompile Include="Modules\ModuleExerciseHub.cpp" />
@@ -311,6 +313,20 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\Exercise2VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-Qembed_debug %(AdditionalOptions)</AdditionalOptions>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Exercise3PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-Qembed_debug %(AdditionalOptions)</AdditionalOptions>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Exercise3VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-Qembed_debug %(AdditionalOptions)</AdditionalOptions>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
