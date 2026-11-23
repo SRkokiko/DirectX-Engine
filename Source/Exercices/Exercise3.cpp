@@ -35,6 +35,15 @@ void Exercise3::render()
     commandList->RSSetViewports(1, &viewport);
     commandList->RSSetScissorRects(1, &scissor);
 
+    Matrix model = Matrix::Identity;
+    Matrix view = Matrix::CreateLookAt(Vector3(0.0f, 10.0f, 10.0f), Vector3::Zero, Vector3::Up);
+    float aspect = float(width) / float(height);
+    Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PIDIV4, aspect, 0.1f, 1000.0f);
+    Matrix mvp = (model * view * proj).Transpose(); // SimpleMath is row-major and pre-multiplies; HLSL expects column-major, hence the transpose
+
+    // Must come after SetGraphicsRootSignature: the signature defines the layout, the command list holds the values
+    commandList->SetGraphicsRoot32BitConstants(0, sizeof(Matrix) / sizeof(UINT32), &mvp, 0);
+
     commandList->DrawInstanced(3, 1, 0, 0);
 }
 
@@ -48,7 +57,7 @@ bool Exercise3::cleanUp()
 
 bool Exercise3::createVertexBuffer()
 {
-    // Clip space: x and y go from -1 to 1, so no World/View/Projection is needed in the vertex shader
+    // Local (model) space: the vertex shader will bring these to clip space with the MVP matrix
     const Vector3 vertices[3] =
     {
         { -1.0f, -1.0f, 0.0f }, // 0: bottom left
@@ -70,9 +79,13 @@ bool Exercise3::createVertexBuffer()
 
 bool Exercise3::createRootSignature()
 {
-    // Empty root signature: the shaders use no resources. The flag lets the Input Assembler read the vertex buffer
+    // One root parameter: the MVP matrix as root constants, bound to shader register b0.
+    // The flag lets the Input Assembler read the vertex buffer
+    CD3DX12_ROOT_PARAMETER rootParameter = {};
+    rootParameter.InitAsConstants(sizeof(Matrix) / sizeof(UINT32), 0);
+
     CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
-    rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    rootSignatureDesc.Init(1, &rootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
     ComPtr<ID3DBlob> blob;
     if (FAILED(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &blob, nullptr)))

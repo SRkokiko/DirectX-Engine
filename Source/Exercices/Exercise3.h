@@ -6,7 +6,7 @@ class ModuleD3D12;
 class ModuleResources;
 
 /**
- * @brief Exercise 3: draws a 2D triangle whose vertices are given directly in clip space.
+ * @brief Exercise 3: draws a 3D triangle whose vertices are given in local space and transformed by an MVP matrix.
  */
 class Exercise3 : public Module
 {
