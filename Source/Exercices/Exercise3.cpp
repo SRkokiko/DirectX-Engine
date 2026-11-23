@@ -5,6 +5,7 @@
 #include "Modules/ModuleResources.h"
 
 #include "ReadData.h"
+#include "DebugDrawPass.h"
 
 Exercise3::Exercise3(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d12), resources(resources)
 {
@@ -12,7 +13,11 @@ Exercise3::Exercise3(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d
 
 bool Exercise3::init()
 {
-    return createVertexBuffer() && createRootSignature() && createPSO();
+    if (!createVertexBuffer() || !createRootSignature() || !createPSO())
+        return false;
+
+    debugDraw = new DebugDrawPass(d3d12->getDevice(), d3d12->getCommandQueue());
+    return true;
 }
 
 void Exercise3::render()
@@ -22,8 +27,13 @@ void Exercise3::render()
     UINT width, height;
     d3d12->getBackBufferSize(width, height);
 
-    // NOTE: ModuleExerciseHub already cleared the back buffer and bound it as the render target.
-    
+    // NOTE: ModuleExerciseHub already cleared the back buffer, but bound it without a depth buffer.
+    // Re-bind the same render target together with the DSV (so only this exercise needs a D32_FLOAT PSO) and clear the depth
+    D3D12_CPU_DESCRIPTOR_HANDLE rtv = d3d12->getCurrentRtvHandle();
+    D3D12_CPU_DESCRIPTOR_HANDLE dsv = d3d12->getDsvHandle();
+    commandList->OMSetRenderTargets(1, &rtv, FALSE, &dsv);
+    commandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
     // The list was reset without a PSO, so everything the draw needs is set here
     commandList->SetGraphicsRootSignature(rootSignature.Get());
     commandList->SetPipelineState(pso.Get());
@@ -45,10 +55,19 @@ void Exercise3::render()
     commandList->SetGraphicsRoot32BitConstants(0, sizeof(Matrix) / sizeof(UINT32), &mvp, 0);
 
     commandList->DrawInstanced(3, 1, 0, 0);
+
+    // Orientation aids: floor grid on the XZ plane and the XYZ axes at the world origin.
+    // record() sets its own pipeline state, so it goes after the triangle
+    dd::xzSquareGrid(-10.0f, 10.0f, 0.0f, 1.0f, dd::colors::LightGray);
+    dd::axisTriad(ddConvert(Matrix::Identity), 0.1f, 1.0f);
+    debugDraw->record(commandList, width, height, view, proj);
 }
 
 bool Exercise3::cleanUp()
 {
+    delete debugDraw;
+    debugDraw = nullptr;
+
     pso.Reset();
     rootSignature.Reset();
     vertexBuffer.Reset();
@@ -131,11 +150,13 @@ bool Exercise3::createPSO()
     psoDesc.InputLayout = { inputLayout, _countof(inputLayout) };
     psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+    psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
     psoDesc.NumRenderTargets = 1;
     psoDesc.SampleDesc = { 1, 0 };
     psoDesc.SampleMask = 0xffffffff;
     psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
     psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+    psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // depth test and write enabled, LESS
 
     if (FAILED(d3d12->getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pso))))
     {
