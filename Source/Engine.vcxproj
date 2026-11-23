@@ -184,6 +184,7 @@
     <ClInclude Include="Exercices\Exercise2.h" />
     <ClInclude Include="Exercices\Exercise3.h" />
     <ClInclude Include="Modules\ModuleD3D12.h" />
+    <ClInclude Include="Modules\ModuleDebugDraw.h" />
     <ClInclude Include="Modules\ModuleEditor.h" />
     <ClInclude Include="Modules\ModuleExerciseHub.h" />
     <ClInclude Include="Views\ViewImGuiDemo.h" />
@@ -283,6 +284,7 @@
     <ClCompile Include="Exercices\Exercise2.cpp" />
     <ClCompile Include="Exercices\Exercise3.cpp" />
     <ClCompile Include="Modules\ModuleD3D12.cpp" />
+    <ClCompile Include="Modules\ModuleDebugDraw.cpp" />
     <ClCompile Include="Modules\ModuleEditor.cpp" />
     <ClCompile Include="Modules\ModuleExerciseHub.cpp" />
     <ClCompile Include="Views\ViewImGuiDemo.cpp" />

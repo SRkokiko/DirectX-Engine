@@ -4,6 +4,7 @@
 #include "Modules/ModuleD3D12.h"
 #include "Modules/ModuleResources.h"
 #include "Modules/ModuleExerciseHub.h"
+#include "Modules/ModuleDebugDraw.h"
 #include "Modules/ModuleEditor.h"
 
 
@@ -16,8 +17,13 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
     ModuleResources* resources = new ModuleResources(d3d12);
     modules.push_back(resources);
 
+    ModuleDebugDraw* debugDraw = new ModuleDebugDraw(d3d12);
+
     // Hosts every exercise; they are toggled from its "Exercises" menu
-    modules.push_back(new ModuleExerciseHub(d3d12, resources));
+    modules.push_back(new ModuleExerciseHub(d3d12, resources, debugDraw));
+
+    // After the exercises that emit dd:: primitives and before the UI: records them once
+    modules.push_back(debugDraw);
 
     // Last: records the UI on top of everything the other modules drew
     modules.push_back(new ModuleEditor(d3d12, (HWND)hWnd));

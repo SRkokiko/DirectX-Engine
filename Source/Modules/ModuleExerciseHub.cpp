@@ -16,7 +16,7 @@
 // Public interface
 // ---------------------------------------------------------------------------
 
-ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d12), resources(resources)
+ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw) : d3d12(d3d12), resources(resources), debugDraw(debugDraw)
 {
 }
 
@@ -31,7 +31,7 @@ bool ModuleExerciseHub::init()
     // Register exercises that clear the back buffer first, or they erase the ones before them
     add(exercises, "Exercise 1: Clear", [this]() -> Module* { return new Exercise1(d3d12); });
     add(exercises, "Exercise 2: Triangle", [this]() -> Module* { return new Exercise2(d3d12, resources); });
-    add(exercises, "Exercise 3: 3D Triangle", [this]() -> Module* { return new Exercise3(d3d12, resources); });
+    add(exercises, "Exercise 3: 3D Triangle", [this]() -> Module* { return new Exercise3(d3d12, resources, debugDraw); });
 
     add(views, "ImGui demo", []() -> Module* { return new ViewImGuiDemo(); });
     add(views, "About", []() -> Module* { return new ViewAbout(); });

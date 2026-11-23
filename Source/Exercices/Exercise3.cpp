@@ -3,21 +3,17 @@
 
 #include "Modules/ModuleD3D12.h"
 #include "Modules/ModuleResources.h"
+#include "Modules/ModuleDebugDraw.h"
 
 #include "ReadData.h"
-#include "DebugDrawPass.h"
 
-Exercise3::Exercise3(ModuleD3D12* d3d12, ModuleResources* resources) : d3d12(d3d12), resources(resources)
+Exercise3::Exercise3(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw) : d3d12(d3d12), resources(resources), debugDraw(debugDraw)
 {
 }
 
 bool Exercise3::init()
 {
-    if (!createVertexBuffer() || !createRootSignature() || !createPSO())
-        return false;
-
-    debugDraw = new DebugDrawPass(d3d12->getDevice(), d3d12->getCommandQueue());
-    return true;
+    return createVertexBuffer() && createRootSignature() && createPSO();
 }
 
 void Exercise3::render()
@@ -57,17 +53,14 @@ void Exercise3::render()
     commandList->DrawInstanced(3, 1, 0, 0);
 
     // Orientation aids: floor grid on the XZ plane and the XYZ axes at the world origin.
-    // record() sets its own pipeline state, so it goes after the triangle
+    // ModuleDebugDraw draws them at the end of the frame into the render target and depth buffer bound above
     dd::xzSquareGrid(-10.0f, 10.0f, 0.0f, 1.0f, dd::colors::LightGray);
     dd::axisTriad(ddConvert(Matrix::Identity), 0.1f, 1.0f);
-    debugDraw->record(commandList, width, height, view, proj);
+    debugDraw->setCamera(view, proj);
 }
 
 bool Exercise3::cleanUp()
 {
-    delete debugDraw;
-    debugDraw = nullptr;
-
     pso.Reset();
     rootSignature.Reset();
     vertexBuffer.Reset();
