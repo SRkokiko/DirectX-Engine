@@ -68,6 +68,14 @@ public:
     D3D12_CPU_DESCRIPTOR_HANDLE getCurrentRtvHandle() const;
 
     /**
+     * @brief DSV descriptor of the depth buffer (D32_FLOAT, same size as the back buffers).
+     * @return Valid between init() and cleanUp(); the buffer stays in DEPTH_WRITE state and follows resize().
+     * Modules that use it must bind it with OMSetRenderTargets, clear it every frame (depth 1.0) and
+     * create their PSO with DSVFormat = DXGI_FORMAT_D32_FLOAT.
+     */
+    D3D12_CPU_DESCRIPTOR_HANDLE getDsvHandle() const;
+
+    /**
      * @brief Current size of the back buffers, used to set the viewport and scissor.
      * @return Valid between init() and cleanUp(); follows resize().
      */
@@ -88,6 +96,8 @@ private:
     bool createSwapChain();
     bool createRenderTargets();
     bool createBackBufferViews();
+    bool createDepthStencil();
+    bool createDepthBuffer();
     bool createFrameResources();
     void waitForFence(UINT64 value);
 
@@ -106,6 +116,10 @@ private:
     ComPtr<ID3D12DescriptorHeap> rtvHeap;
     ComPtr<ID3D12Resource> backBuffers[BACK_BUFFER_COUNT];
     UINT rtvDescriptorSize = 0;
+
+    // Single depth buffer shared by all frames in flight (same as the back buffers' size)
+    ComPtr<ID3D12DescriptorHeap> dsvHeap;
+    ComPtr<ID3D12Resource> depthStencilBuffer;
 
     // One allocator per back buffer
     ComPtr<ID3D12CommandAllocator> commandAllocators[BACK_BUFFER_COUNT];

@@ -73,6 +73,9 @@ bool ModuleD3D12::init()
     if (!createRenderTargets())
         return false;
 
+    if (!createDepthStencil())
+        return false;
+
     return createFrameResources();
 }
 
@@ -92,6 +95,7 @@ void ModuleD3D12::resize(UINT width, UINT height)
 
     for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
         backBuffers[i].Reset();
+    depthStencilBuffer.Reset();
 
     if (FAILED(swapChain->ResizeBuffers(BACK_BUFFER_COUNT, width, height, DXGI_FORMAT_UNKNOWN, 0)))
     {
@@ -101,6 +105,9 @@ void ModuleD3D12::resize(UINT width, UINT height)
 
     // Same heap and slots, new buffers: just rewrite the descriptors
     createBackBufferViews();
+
+    // The depth buffer must match the new back buffer size
+    createDepthBuffer();
 }
 
 void ModuleD3D12::preRender()
@@ -155,6 +162,8 @@ bool ModuleD3D12::cleanUp()
         commandAllocators[i].Reset();
     for (UINT i = 0; i < BACK_BUFFER_COUNT; ++i)
         backBuffers[i].Reset();
+    depthStencilBuffer.Reset();
+    dsvHeap.Reset();
     rtvHeap.Reset();
     swapChain.Reset();
     commandQueue.Reset();
@@ -170,6 +179,11 @@ D3D12_CPU_DESCRIPTOR_HANDLE ModuleD3D12::getCurrentRtvHandle() const
 {
     // i-th RTV descriptor <-> i-th back buffer
     return CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(), swapChain->GetCurrentBackBufferIndex(), rtvDescriptorSize);
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE ModuleD3D12::getDsvHandle() const
+{
+    return dsvHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
 void ModuleD3D12::getBackBufferSize(UINT& width, UINT& height) const
@@ -247,6 +261,49 @@ bool ModuleD3D12::createBackBufferViews()
         rtvHandle.Offset(1, rtvDescriptorSize);
     }
 
+    return true;
+}
+
+bool ModuleD3D12::createDepthStencil()
+{
+    // Non shader-visible heap with a single DSV slot: the buffer is recreated in the same slot on resize
+    D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
+    heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+    heapDesc.NumDescriptors = 1;
+    heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+    if (FAILED(device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&dsvHeap))))
+    {
+        LOG("Failed to create DSV descriptor heap");
+        return false;
+    }
+
+    return createDepthBuffer();
+}
+
+// (Re)creates the depth texture at the back buffer size and rewrites its DSV descriptor
+bool ModuleD3D12::createDepthBuffer()
+{
+    UINT width, height;
+    getBackBufferSize(width, height);
+
+    CD3DX12_HEAP_PROPERTIES heapProps(D3D12_HEAP_TYPE_DEFAULT);
+    // arraySize = 1, mipLevels = 1 (0 would allocate a full mip chain)
+    CD3DX12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, width, height, 1, 1, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+
+    // Clearing with this exact value is the fast path (1.0 = far plane, with the default LESS test)
+    D3D12_CLEAR_VALUE clearValue = {};
+    clearValue.Format = DXGI_FORMAT_D32_FLOAT;
+    clearValue.DepthStencil.Depth = 1.0f;
+    clearValue.DepthStencil.Stencil = 0;
+
+    if (FAILED(device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &clearValue, IID_PPV_ARGS(&depthStencilBuffer))))
+    {
+        LOG("Failed to create the depth buffer");
+        return false;
+    }
+
+    // nullptr desc: default view of the whole texture
+    device->CreateDepthStencilView(depthStencilBuffer.Get(), nullptr, dsvHeap->GetCPUDescriptorHandleForHeapStart());
     return true;
 }
 
