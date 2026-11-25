@@ -191,6 +191,8 @@
     <ClInclude Include="Views\ViewAbout.h" />
     <ClInclude Include="Views\View.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
+    <ClInclude Include="Modules\ModuleTime.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlatformHelpers.h" />
     <ClInclude Include="ReadData.h" />
@@ -290,6 +292,7 @@
     <ClCompile Include="Views\ViewImGuiDemo.cpp" />
     <ClCompile Include="Views\ViewAbout.cpp" />
     <ClCompile Include="Modules\ModuleResources.cpp" />
+    <ClCompile Include="Modules\ModuleTime.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SimpleMath.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

@@ -49,6 +49,9 @@
     <ClCompile Include="Modules\ModuleResources.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdParty\imgui-1.89.8\backends\imgui_impl_win32.h" />
@@ -107,6 +110,10 @@
     <ClInclude Include="Modules\ModuleResources.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

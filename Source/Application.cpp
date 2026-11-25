@@ -6,10 +6,15 @@
 #include "Modules/ModuleExerciseHub.h"
 #include "Modules/ModuleDebugDraw.h"
 #include "Modules/ModuleEditor.h"
+#include "Modules/ModuleTime.h"
 
 
 Application::Application(int argc, wchar_t** argv, void* hWnd)
 {
+    // First, so the engine clock covers the init of every other module
+    moduleTime = new ModuleTime();
+    modules.push_back(moduleTime);
+
     ModuleD3D12* d3d12 = new ModuleD3D12((HWND)hWnd);
 
     modules.push_back(d3d12);
@@ -43,27 +48,20 @@ bool Application::init()
 {
 	bool ret = true;
 
+    Timer initTimer;
+    initTimer.start();
+
 	for(auto it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->init();
 
-    lastMilis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    moduleTime->markInitDone(initTimer.stop());
 
 	return ret;
 }
 
 void Application::update()
 {
-    using namespace std::chrono_literals;
-
-    // Update milis
-    uint64_t currentMilis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-
-    elapsedMilis = currentMilis - lastMilis;
-    lastMilis = currentMilis;
-    tickSum -= tickList[tickIndex];
-    tickSum += elapsedMilis;
-    tickList[tickIndex] = elapsedMilis;
-    tickIndex = (tickIndex + 1) % MAX_FPS_TICKS;
+    moduleTime->beginFrame();
 
     if (!app->paused)
     {
