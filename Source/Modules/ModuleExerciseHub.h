@@ -8,7 +8,7 @@
 class ModuleD3D12;
 class ModuleResources;
 class ModuleDebugDraw;
-class ModuleTime;
+class Clock;
 
 /**
  * @brief Hosts every exercise and view, and lets you enable/disable each one from the "Exercises" and "Views" menus
@@ -38,7 +38,7 @@ public:
      * @param debugDraw Handed to the exercises that draw debug primitives.
      * @param time Handed to the views that show or control the timers.
      */
-    ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw, ModuleTime* time);
+    ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw, Clock* time);
     ~ModuleExerciseHub() override;
 
     /** @brief Registers the exercises and views and enables the default ones. */
@@ -78,7 +78,7 @@ private:
     ModuleD3D12* d3d12 = nullptr;
     ModuleResources* resources = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
-    ModuleTime* time = nullptr;
+    Clock* time = nullptr;
 
     std::vector<Entry> exercises;
     std::vector<Entry> views;

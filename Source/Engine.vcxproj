@@ -192,7 +192,7 @@
     <ClInclude Include="Views\ViewTimers.h" />
     <ClInclude Include="Views\View.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
-    <ClInclude Include="Modules\ModuleTime.h" />
+    <ClInclude Include="Clock.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlatformHelpers.h" />
@@ -294,7 +294,7 @@
     <ClCompile Include="Views\ViewAbout.cpp" />
     <ClCompile Include="Views\ViewTimers.cpp" />
     <ClCompile Include="Modules\ModuleResources.cpp" />
-    <ClCompile Include="Modules\ModuleTime.cpp" />
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SimpleMath.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

@@ -1,11 +1,11 @@
 #include "Globals.h"
 #include "ViewTimers.h"
 
-#include "Modules/ModuleTime.h"
+#include "Clock.h"
 
 #include "imgui.h"
 
-ViewTimers::ViewTimers(ModuleTime* time) : time(time)
+ViewTimers::ViewTimers(Clock* time) : time(time)
 {
     // Pick up the current cap, so reopening the view doesn't change it
     uint32_t maxFps = time->getState().maxFps;

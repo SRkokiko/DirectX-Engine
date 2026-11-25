@@ -6,15 +6,11 @@
 #include "Modules/ModuleExerciseHub.h"
 #include "Modules/ModuleDebugDraw.h"
 #include "Modules/ModuleEditor.h"
-#include "Modules/ModuleTime.h"
+#include "Clock.h"
 
 
 Application::Application(int argc, wchar_t** argv, void* hWnd)
 {
-    // First, so the engine clock covers the init of every other module
-    moduleTime = new ModuleTime();
-    modules.push_back(moduleTime);
-
     ModuleD3D12* d3d12 = new ModuleD3D12((HWND)hWnd);
 
     modules.push_back(d3d12);
@@ -25,7 +21,7 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
     ModuleDebugDraw* debugDraw = new ModuleDebugDraw(d3d12);
 
     // Hosts every exercise; they are toggled from its "Exercises" menu
-    modules.push_back(new ModuleExerciseHub(d3d12, resources, debugDraw, moduleTime));
+    modules.push_back(new ModuleExerciseHub(d3d12, resources, debugDraw, &clock));
 
     // After the exercises that emit dd:: primitives and before the UI: records them once
     modules.push_back(debugDraw);
@@ -54,19 +50,19 @@ bool Application::init()
 	for(auto it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->init();
 
-    moduleTime->markInitDone(initTimer.stop());
+    clock.markInitDone(initTimer.stop());
 
 	return ret;
 }
 
 void Application::update()
 {
-    moduleTime->beginFrame();
+    clock.beginFrame();
 
     if (!app->paused)
     {
         for (auto it = modules.begin(); it != modules.end(); ++it)
-            (*it)->update(moduleTime->getDeltaTime());
+            (*it)->update(clock.getDeltaTime());
 
         for (auto it = modules.begin(); it != modules.end(); ++it)
             (*it)->preRender();
@@ -78,7 +74,7 @@ void Application::update()
             (*it)->postRender();
     }
 
-    moduleTime->endFrame();
+    clock.endFrame();
 }
 
 void Application::resize(unsigned width, unsigned height)

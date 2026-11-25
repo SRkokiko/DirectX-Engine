@@ -1,23 +1,23 @@
 #include "Globals.h"
-#include "ModuleTime.h"
+#include "Clock.h"
 
 #include <algorithm>
 
 #include <timeapi.h>
 #pragma comment(lib, "winmm.lib")
 
-ModuleTime::ModuleTime()
+Clock::Clock()
 {
     timeBeginPeriod(1);
     clock.start();
 }
 
-ModuleTime::~ModuleTime()
+Clock::~Clock()
 {
     timeEndPeriod(1);
 }
 
-void ModuleTime::endFrame()
+void Clock::endFrame()
 {
     if (state.maxFps == 0)
         return;
@@ -37,7 +37,7 @@ void ModuleTime::endFrame()
     }
 }
 
-void ModuleTime::beginFrame()
+void Clock::beginFrame()
 {
     uint64_t nowUs = clock.readUs();
 
@@ -70,7 +70,7 @@ void ModuleTime::beginFrame()
     ++state.frameCount;
 }
 
-void ModuleTime::markInitDone(uint64_t initUs)
+void Clock::markInitDone(uint64_t initUs)
 {
     state.initUs = initUs;
     lastUs = clock.readUs();

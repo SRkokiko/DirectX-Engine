@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Globals.h"
+#include "Clock.h"
 
 #include <vector>
 
 class Module;
-class ModuleTime;
 
 class Application
 {
@@ -19,17 +19,17 @@ public:
 	void         resize(unsigned width, unsigned height);
 	bool         cleanUp();
 
-    ModuleTime*                 getTime() const { return moduleTime; }
+    Clock*                      getClock() { return &clock; }
 
     // Skips the whole frame (update and render); used while the window is minimized.
-    // Not the Play/Stop of the simulation, which is ModuleTime::play()/stop() and keeps rendering.
+    // Not the Play/Stop of the simulation, which is Clock::play()/stop() and keeps rendering.
     bool                        isPaused() const { return paused; }
     bool                        setPaused(bool p) { paused = p; return paused; }
 
 private:
     std::vector<Module*> modules;
 
-    ModuleTime* moduleTime = nullptr;
+    Clock       clock;   // Not a Module: Application drives it explicitly. Built before the constructor body, so the clock covers the init of every module
     bool        paused = false;
 };
 

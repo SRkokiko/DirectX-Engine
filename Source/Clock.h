@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Module.h"
 #include "Timer.h"
 
 #include <array>
 
 /**
- * @brief All of ModuleTime's timing state. `dt` is what drives the simulation, so ModuleTime is the only one that
+ * @brief All of Clock's timing state. `dt` is what drives the simulation, so Clock is the only one that
  * writes it; everyone else reads it through getDeltaTime() or the const getState() (the Timers view does the latter).
  */
 struct TimeState
@@ -25,18 +24,18 @@ struct TimeState
 /**
  * @brief Owns the engine clock and the frame timing: dt, FPS, total time and init time.
  *
- * Register it first in Application so nothing runs before it. Application::update calls beginFrame() before
- * the other modules' update, and Application::init reports the init duration through markInitDone().
+ * Not a Module: Application owns it as a member and drives it explicitly. Application::update calls beginFrame() before
+ * the modules' update, and Application::init reports the init duration through markInitDone().
  *
  * dt is read-only for everyone else: use getDeltaTime() (or getState()).
  */
-class ModuleTime : public Module
+class Clock
 {
 public:
 
     /** @brief Starts the engine clock and asks Windows for 1 ms timer resolution, so the limiter can sleep accurately. */
-    ModuleTime();
-    ~ModuleTime() override;
+    Clock();
+    ~Clock();
 
     /** @brief Measures the time since the previous call and updates dt, FPS and the counters. */
     void beginFrame();

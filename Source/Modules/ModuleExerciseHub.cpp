@@ -17,7 +17,7 @@
 // Public interface
 // ---------------------------------------------------------------------------
 
-ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw, ModuleTime* time) : d3d12(d3d12), resources(resources), debugDraw(debugDraw), time(time)
+ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw, Clock* time) : d3d12(d3d12), resources(resources), debugDraw(debugDraw), time(time)
 {
 }
 
