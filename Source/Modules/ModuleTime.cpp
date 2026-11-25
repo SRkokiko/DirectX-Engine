@@ -19,10 +19,10 @@ ModuleTime::~ModuleTime()
 
 void ModuleTime::endFrame()
 {
-    if (info.maxFps == 0)
+    if (state.maxFps == 0)
         return;
 
-    const uint64_t targetUs = 1000000ull / info.maxFps;
+    const uint64_t targetUs = 1000000ull / state.maxFps;
     const uint64_t spinUs = 2000;   // Margin left for spinning, to absorb Sleep overshoot
 
     for (;;)
@@ -41,26 +41,37 @@ void ModuleTime::beginFrame()
 {
     uint64_t nowUs = clock.readUs();
 
-    info.frameUs = nowUs - lastUs;
-    info.dt = float(info.frameUs) * 1e-6f;
-    info.totalUs = nowUs;
+    state.frameUs = nowUs - lastUs;
+    state.realDt = float(state.frameUs) * 1e-6f;
+    state.totalUs = nowUs;
     lastUs = nowUs;
+
+    // Game dt: follows the real time only while playing
+    if (playing)
+        state.dt = state.realDt;
+    else if (stepRequested)
+        state.dt = STEP_DT;
+    else
+        state.dt = 0.0f;
+
+    stepRequested = false;
+    state.gameTotalUs += uint64_t(state.dt * 1e6f);
 
     // Rolling average, so the FPS doesn't jitter from frame to frame
     sampleSum -= samples[sampleIndex];
-    sampleSum += info.frameUs;
-    samples[sampleIndex] = info.frameUs;
+    sampleSum += state.frameUs;
+    samples[sampleIndex] = state.frameUs;
     sampleIndex = (sampleIndex + 1) % FPS_SAMPLES;
 
     // Until the window is full, average only the frames we actually have
-    uint64_t count = std::min<uint64_t>(info.frameCount + 1, FPS_SAMPLES);
-    info.fps = sampleSum > 0 ? 1e6f * float(count) / float(sampleSum) : 0.0f;
+    uint64_t count = std::min<uint64_t>(state.frameCount + 1, FPS_SAMPLES);
+    state.fps = sampleSum > 0 ? 1e6f * float(count) / float(sampleSum) : 0.0f;
 
-    ++info.frameCount;
+    ++state.frameCount;
 }
 
 void ModuleTime::markInitDone(uint64_t initUs)
 {
-    info.initUs = initUs;
+    state.initUs = initUs;
     lastUs = clock.readUs();
 }

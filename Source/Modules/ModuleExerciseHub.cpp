@@ -9,6 +9,7 @@
 #include "Views/View.h"
 #include "Views/ViewAbout.h"
 #include "Views/ViewImGuiDemo.h"
+#include "Views/ViewTimers.h"
 
 #include "imgui.h"
 
@@ -16,7 +17,7 @@
 // Public interface
 // ---------------------------------------------------------------------------
 
-ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw) : d3d12(d3d12), resources(resources), debugDraw(debugDraw)
+ModuleExerciseHub::ModuleExerciseHub(ModuleD3D12* d3d12, ModuleResources* resources, ModuleDebugDraw* debugDraw, ModuleTime* time) : d3d12(d3d12), resources(resources), debugDraw(debugDraw), time(time)
 {
 }
 
@@ -34,6 +35,7 @@ bool ModuleExerciseHub::init()
     add(exercises, "Exercise 3: 3D Triangle", [this]() -> Module* { return new Exercise3(d3d12, resources, debugDraw); });
 
     add(views, "ImGui demo", []() -> Module* { return new ViewImGuiDemo(); });
+    add(views, "Timers", [this]() -> Module* { return new ViewTimers(time); });
     add(views, "About", []() -> Module* { return new ViewAbout(); });
     return true;
 }

@@ -21,6 +21,8 @@ public:
 
     ModuleTime*                 getTime() const { return moduleTime; }
 
+    // Skips the whole frame (update and render); used while the window is minimized.
+    // Not the Play/Stop of the simulation, which is ModuleTime::play()/stop() and keeps rendering.
     bool                        isPaused() const { return paused; }
     bool                        setPaused(bool p) { paused = p; return paused; }
 

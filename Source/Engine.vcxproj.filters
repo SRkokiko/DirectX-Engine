@@ -46,6 +46,9 @@
     <ClCompile Include="Views\ViewAbout.cpp">
       <Filter>Views</Filter>
     </ClCompile>
+    <ClCompile Include="Views\ViewTimers.cpp">
+      <Filter>Views</Filter>
+    </ClCompile>
     <ClCompile Include="Modules\ModuleResources.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -105,6 +108,9 @@
       <Filter>Views</Filter>
     </ClInclude>
     <ClInclude Include="Views\ViewAbout.h">
+      <Filter>Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Views\ViewTimers.h">
       <Filter>Views</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModuleResources.h">

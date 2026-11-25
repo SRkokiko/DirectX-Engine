@@ -25,7 +25,7 @@ Application::Application(int argc, wchar_t** argv, void* hWnd)
     ModuleDebugDraw* debugDraw = new ModuleDebugDraw(d3d12);
 
     // Hosts every exercise; they are toggled from its "Exercises" menu
-    modules.push_back(new ModuleExerciseHub(d3d12, resources, debugDraw));
+    modules.push_back(new ModuleExerciseHub(d3d12, resources, debugDraw, moduleTime));
 
     // After the exercises that emit dd:: primitives and before the UI: records them once
     modules.push_back(debugDraw);

@@ -189,6 +189,7 @@
     <ClInclude Include="Modules\ModuleExerciseHub.h" />
     <ClInclude Include="Views\ViewImGuiDemo.h" />
     <ClInclude Include="Views\ViewAbout.h" />
+    <ClInclude Include="Views\ViewTimers.h" />
     <ClInclude Include="Views\View.h" />
     <ClInclude Include="Modules\ModuleResources.h" />
     <ClInclude Include="Modules\ModuleTime.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="Modules\ModuleExerciseHub.cpp" />
     <ClCompile Include="Views\ViewImGuiDemo.cpp" />
     <ClCompile Include="Views\ViewAbout.cpp" />
+    <ClCompile Include="Views\ViewTimers.cpp" />
     <ClCompile Include="Modules\ModuleResources.cpp" />
     <ClCompile Include="Modules\ModuleTime.cpp" />
     <ClCompile Include="Mouse.cpp" />
