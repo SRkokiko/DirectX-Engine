@@ -43,7 +43,7 @@ public:
     bool init() override;
 
     /** @brief Applies pending enable/disable changes, then updates the enabled exercises and views. */
-    void update() override;
+    void update(float dt) override;
 
     void preRender() override;
 

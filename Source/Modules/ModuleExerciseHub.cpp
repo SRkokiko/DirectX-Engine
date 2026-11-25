@@ -38,12 +38,12 @@ bool ModuleExerciseHub::init()
     return true;
 }
 
-void ModuleExerciseHub::update()
+void ModuleExerciseHub::update(float dt)
 {
     sync(exercises);
     sync(views);
 
-    forEachInstance([](Module& module) { module.update(); });
+    forEachInstance([dt](Module& module) { module.update(dt); });
 }
 
 void ModuleExerciseHub::preRender()

@@ -28,7 +28,11 @@ public:
 	{
 	}
 
-	virtual void update()
+	/**
+	 * @brief Called once per frame before rendering.
+	 * @param dt Duration of the last frame in seconds; multiply any per-frame movement by it.
+	 */
+	virtual void update(float dt)
 	{
 	}
 

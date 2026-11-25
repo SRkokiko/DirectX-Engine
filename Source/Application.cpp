@@ -66,7 +66,7 @@ void Application::update()
     if (!app->paused)
     {
         for (auto it = modules.begin(); it != modules.end(); ++it)
-            (*it)->update();
+            (*it)->update(moduleTime->getDeltaTime());
 
         for (auto it = modules.begin(); it != modules.end(); ++it)
             (*it)->preRender();
@@ -77,6 +77,8 @@ void Application::update()
         for (auto it = modules.begin(); it != modules.end(); ++it)
             (*it)->postRender();
     }
+
+    moduleTime->endFrame();
 }
 
 void Application::resize(unsigned width, unsigned height)

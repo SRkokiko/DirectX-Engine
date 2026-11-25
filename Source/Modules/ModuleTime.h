@@ -14,6 +14,7 @@ struct TimeInfo
     uint64_t totalUs = 0;       // Time since the module was created, in microseconds
     uint64_t frameCount = 0;
     uint64_t initUs = 0;        // How long Application::init took, in microseconds
+    uint32_t maxFps = 0;        // Frame rate cap; 0 means unlimited
 };
 
 /**
@@ -28,11 +29,22 @@ class ModuleTime : public Module
 {
 public:
 
-    /** @brief Starts the engine clock. */
+    /** @brief Starts the engine clock and asks Windows for 1 ms timer resolution, so the limiter can sleep accurately. */
     ModuleTime();
+    ~ModuleTime() override;
 
     /** @brief Measures the time since the previous call and updates dt, FPS and the counters. */
     void beginFrame();
+
+    /**
+     * @brief Waits until the frame has lasted at least 1/maxFps seconds since beginFrame(). Does nothing if maxFps is 0.
+     * Sleeps for most of the wait and spins for the last stretch, because Sleep is too coarse to hit the target alone.
+     * Note: ModuleD3D12 presents with vsync, so a cap above the monitor's refresh rate has no visible effect.
+     */
+    void endFrame();
+
+    /** @brief Caps the frame rate. 0 removes the cap. */
+    void setMaxFps(uint32_t fps) { info.maxFps = fps; }
 
     /**
      * @brief Records how long Application::init took and restarts the frame clock,

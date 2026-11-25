@@ -3,9 +3,38 @@
 
 #include <algorithm>
 
+#include <timeapi.h>
+#pragma comment(lib, "winmm.lib")
+
 ModuleTime::ModuleTime()
 {
+    timeBeginPeriod(1);
     clock.start();
+}
+
+ModuleTime::~ModuleTime()
+{
+    timeEndPeriod(1);
+}
+
+void ModuleTime::endFrame()
+{
+    if (info.maxFps == 0)
+        return;
+
+    const uint64_t targetUs = 1000000ull / info.maxFps;
+    const uint64_t spinUs = 2000;   // Margin left for spinning, to absorb Sleep overshoot
+
+    for (;;)
+    {
+        uint64_t elapsedUs = clock.readUs() - lastUs;
+        if (elapsedUs >= targetUs)
+            break;
+
+        uint64_t remainingUs = targetUs - elapsedUs;
+        if (remainingUs > spinUs)
+            Sleep(DWORD((remainingUs - spinUs) / 1000));
+    }
 }
 
 void ModuleTime::beginFrame()
